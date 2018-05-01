@@ -7,10 +7,8 @@ using UnityEngine.UI;
 public class IngameMenu : MonoBehaviour 
 {
     public GameObject ingameMenu;
-    public ScoreController scoreMenu;
 
     public string menuLevel;
-    
 	
 
     /* --- Ingame menu ---
@@ -33,6 +31,7 @@ public class IngameMenu : MonoBehaviour
         }
 	}
 
+
     /* --- Menu acties ---
      Hieronder staan alle acties die het menu kan uitvoeren.
     */
@@ -46,7 +45,6 @@ public class IngameMenu : MonoBehaviour
     void UnpauseGame()
     {
         ingameMenu.gameObject.SetActive(false);
-        scoreMenu.gameObject.SetActive(false);
         Time.timeScale = 1;
     }
 

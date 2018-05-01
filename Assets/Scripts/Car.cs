@@ -6,8 +6,7 @@ using UnityEngine.UI;
 public class Car : MonoBehaviour
 {
     // --- Publieke variabelen ---
-
-    [Header("Player Settings")]
+	
     // De naam van de input axis voor links en rechts voor deze auto.
     public string horizontalInput;
 
@@ -15,12 +14,12 @@ public class Car : MonoBehaviour
     public string verticalInput;
 
     // De KeyCode om de camera mee te veranderen voor deze auto.
-    public KeyCode cameraInput;                 
+    public KeyCode cameraInput;
 
-    
-    [Header("Vehicle Properties")]
-    // Deze variable houdt bij of de speler mag rijden of niet. (Bijvoorbeeld tijdens de countdown.)
-    public bool isEnabled;
+	[Space] // Dit zorgt voor een kleine witregel in de Inspector (voor beter overzicht).
+
+	// Deze variable houdt bij of de speler mag rijden of niet. (Bijvoorbeeld tijdens de countdown.)
+	public bool isEnabled;
 
     // Dit is de kracht van de motor, hoe hoger en hoe sneller de auto optrekt.
     public float motorPower;
@@ -33,10 +32,10 @@ public class Car : MonoBehaviour
     // gaan. Vandaar dat ik hem handmatig wil instellen.
     public Vector3 centerOfMass;
 
-    
-    [Header("Wheel References")]
-    // Dit zijn de referenties naar alle models voor de wielen op deze auto.
-    public GameObject wheelObjFrontRight;       
+	[Space]
+
+	// Dit zijn de referenties naar alle models voor de wielen op deze auto.
+	public GameObject wheelObjFrontRight;       
     public GameObject wheelObjFrontLeft;
     public GameObject wheelObjRearRight;
     public GameObject wheelObjRearLeft;
@@ -47,13 +46,11 @@ public class Car : MonoBehaviour
     public WheelCollider wheelColRearRight;
     public WheelCollider wheelColRearLeft;
 
-    
-    [Header("Camera References")]
-    // Dit is een lijst van alle camera's voor deze auto.
-    public GameObject[] allCameras;             
+	[Space]
 
-    
-    [Header("UI References")]
+	// Dit is een lijst van alle camera's voor deze auto.
+	public GameObject[] allCameras;             
+
     // Dit is een referentie naar de UI text voor de snelheidsmeter.
     public Canvas speedoCanvas;
     public Text speedometer;

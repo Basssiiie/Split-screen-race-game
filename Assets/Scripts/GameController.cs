@@ -9,22 +9,36 @@ public class GameController : MonoBehaviour
     // auto-script om direct toegang te hebben tot dat script.
     public List<Car> players;
 
-    public ScoreController scoreController;
-    
+	
+	[Space] // Dit zorgt voor een kleine witregel in de Inspector (voor beter overzicht).
 
-    [Header("Countdown Settings")]
-    // Een referentie naar de countdown UI Canvas GameObject en de Textbox.
-    public GameObject countDownCanvas;
-    public Text countDownText;
+	// Een referentie naar de countdown UI GameObject en de Textbox.
+	public GameObject centerPanelObj;
+    public Text centerPanelText;
 
     // Het nummer waar de countdown moet starten, bijvoorbeeld 3.
     public int startCount;
 
     // Vaak telt een countdown niet af per seconde, maar langzamer voor dramatisch effect! :)
-    public float timePerCount;
+    public float secondsPerCount;
 
-    
-    [Space]
+	
+	[Space]
+
+	// Alle variabelen nodig voor het updaten van de timer.
+	public GameObject timerObj;
+	public Text timerText;
+
+	private bool startTimer = false;
+	private float currentTimer = 0;
+
+	// De variabel 'BestTimeScore' heb ik een 'static' gemaakt, om ervoor te zorgen dat deze waarde 
+	// voor de rest van de speelsessie wordt onthouden.
+	private static float BestTimeScore = float.MaxValue;
+
+
+	[Space]
+
     // Een list van alle checkpoints in het spel. Ik gebruik het type 'Checkpoint', de naam van
     // mijn checkpoint-script om direct toegang te hebben tot dat script.
     public List<Checkpoint> checkpoints;
@@ -37,7 +51,7 @@ public class GameController : MonoBehaviour
 
 
 
-    void Start()
+	private void Start()
     {
         StartCoroutine(CountDown());
 
@@ -50,30 +64,75 @@ public class GameController : MonoBehaviour
         foreach (Checkpoint point in checkpoints)
         {
             point.gameController = this;
-            scoreController.AddScore("Test" + Random.Range(15, 150), Random.Range(15, 150));
         }
     }
 
 
+	/* --- Update voor Timer ---
+     Ik gebruik de Update in dit object eigenlijk alleen voor de Timer.
+    */
+	private void Update()
+	{
+		if (!startTimer)
+		{
+			return;
+		}
 
-    /* --- Count down ---
+		currentTimer += Time.deltaTime;
+
+		string curTime = ChangeFloatIntoTime(currentTimer);
+		string bestTime = "not set";
+
+		if (BestTimeScore != float.MaxValue)
+		{
+			bestTime = ChangeFloatIntoTime(BestTimeScore);
+		}
+
+		timerText.text = (curTime + "\n" + bestTime); // De '\n' betekend 'nieuwe regel'.
+	}
+
+
+	/* --- Timer naar Text ---
+	 Om de Timer-float gemakkelijk om te zetten naar tekst, heb ik besloten een functie te 
+	 schrijven die om een tijd-'float' vraagt, en deze vervolgens omzet in een tekst-'string' met 
+	 de juiste tijd. 
+	*/
+	private string ChangeFloatIntoTime(float time)
+	{
+		int minutes = Mathf.FloorToInt(time / 60);
+		float seconds = time % 60;
+
+		// Met ToString kun je verschillende regels zetten over hoe de waarde wordt omgevormt naar
+		// tekst. Hieronder geef ik met '00' aan dat 'seconds' altijd 2 van die karakters heeft op 
+		// die plek, die pas worden overschreven als de 'seconds' variabele groter is dan nul. 
+		// (Meer informatie: https://docs.microsoft.com/en-us/dotnet/standard/base-types/custom-numeric-format-strings )
+		string text = minutes + ":" + seconds.ToString("00.00"); // + milli.ToString(".00");
+
+		return text;
+	}
+
+
+	/* --- Count down ---
      Er zijn veel verschillende manieren om een countdown te maken. Voor deze versie gebruik ik
      een co-routine.
     */
-    IEnumerator CountDown()
+	IEnumerator CountDown()
     {
         int currentCount = startCount;
         
         while (currentCount > 0)
         {
-            countDownText.text = currentCount.ToString();
+            centerPanelText.text = currentCount.ToString();
 
             currentCount--;
             
-            yield return new WaitForSeconds(timePerCount);
+            yield return new WaitForSeconds(secondsPerCount);
         }
         
-        countDownText.text = "GO!";
+        centerPanelText.text = "GO!";
+
+		startTimer = true;
+		timerObj.SetActive(true);
 
         // Activeer alle spelers, zodat ze kunnen rijden.
         foreach (Car car in players)
@@ -81,9 +140,9 @@ public class GameController : MonoBehaviour
             car.isEnabled = true;
         }
         
-        yield return new WaitForSeconds(timePerCount);
+        yield return new WaitForSeconds(secondsPerCount);
 
-        countDownCanvas.SetActive(false);
+        centerPanelObj.SetActive(false);
     }
 
 
@@ -125,11 +184,15 @@ public class GameController : MonoBehaviour
             */
             if (currentCheckpoints[playerIndex] >= checkpoints.Count)
             {
-                countDownText.text = player.name + " won!";
-                countDownCanvas.SetActive(true);
-                isRaceFinished = true;
+                centerPanelText.text = player.name + " won!";
+                centerPanelObj.SetActive(true);
 
-                scoreController.AddScore("Test", 15);
+				if (currentTimer < BestTimeScore)
+				{
+					BestTimeScore = currentTimer;
+				}
+
+                isRaceFinished = true;
             }
         }
     }
