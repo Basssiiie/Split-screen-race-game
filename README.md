@@ -1,5 +1,5 @@
 # Split-screen-race-game
-An example project for my Unity Game Development class for 1st year students. The objective for this semester is to build a Split-screen Racer in 10 weeks.
+An example project for my Unity Game Development class for 1st year students. The objective for the 3rd semester was to build a Split-screen Racer in 10 weeks.
 
 The comments in the project are in Dutch, as the class is given in Dutch as well. This project will go private after the summer, so download it if you want to keep a copy.
 
