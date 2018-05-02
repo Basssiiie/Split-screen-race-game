@@ -14,4 +14,4 @@ The comments in the project are in Dutch, as the class is given in Dutch as well
 
 4. Navigeer naar het Split-screen-race-game project op je computer en selecteer de hoofdmap om het project te openen in Unity.
 
-We zullen uitgebreider gebruik van Github in het tweede jaar behandelen.
+We zullen uitgebreider gebruik van Github in het tweede jaar behandelen. Voor vragen, stuur gerust een emailtje of vraag het in de les!
